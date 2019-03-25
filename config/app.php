@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Property Markits'),
+    'name' => env('APP_NAME', 'API_ringa_middware'),
 
     /*
     |--------------------------------------------------------------------------
@@ -227,6 +227,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Input' => Illuminate\Support\Facades\Input::class,
         'Uuid' => Webpatser\Uuid\Uuid::class,
     ],
 

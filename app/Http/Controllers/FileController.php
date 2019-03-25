@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\File;
+use Input;
 
 class FileController extends Controller
 {
@@ -14,7 +15,8 @@ class FileController extends Controller
      */
     public function index()
     {
-        //
+        $file = File::all();
+        return response()->json(['status' => 'All files', 'data' => $file]);
     }
 
     /**
@@ -35,12 +37,35 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        $file = new File();
-        $file->entry_id = $request->get('entry_id');
-        $file->file = $request->get('file');
-        $file->save();
 
-        return response()->json(['status' => 'File uploaded successfully', 'data' => $file]);
+        // header('Access-Control-Allow-Origin: *');
+        // $target_path = "uploads/";
+        // $target_path = $target_path . basename($_FILES['file']['name']);
+        // if (move_uploaded_file($_FILES['file']['tmp_name'], $target_path)) {
+        //     header('Content-type: application/json');
+        //     $data = ['success' => true, 'message' => 'Upload and move success'];
+        //     echo json_encode($data);
+        // } else {
+        //     header('Content-type: application/json');
+        //     $data = ['success' => false, 'message' => 'There was an error uploading the file, please try again!'];
+        //     echo json_encode($data);
+        // }
+
+        if ($request->hasFile('file')) {
+            $file = $request->file;
+            $path = $request->file->store('files');
+            $filename = $file->getClientOriginalName();
+
+            $file = new File();
+            $file->entry_id = $request->get('entry_id') || 0;
+            $file->file = $path;
+            $file->save();
+
+            return response()->json(['status' => 'File uploaded successfully', 'data' => $file]);
+        } else {
+            // return 'select file';
+            return response()->json(['status' => 'Select a file', 'data' => 0]);
+        }
     }
 
     /**
@@ -51,7 +76,8 @@ class FileController extends Controller
      */
     public function show($id)
     {
-        //
+        $file = File::where('_id', $id)->get();
+        return response()->json(['status' => 'Single file', 'data' => $file]);
     }
 
     /**
@@ -85,6 +111,7 @@ class FileController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $file = File::where('_id', $id)->delete();
+        return response()->json(['status' => 'File deleted successfully', 'data' => $file]);
     }
 }

@@ -25,21 +25,6 @@ Route::group([
     'prefix' => 'v1/auth/',
 ], function () {
 
-    // Account
-    Route::post('login', 'AuthController@login');
-    Route::post('signup', 'AuthController@signup');
-    Route::post('password/reset', 'AuthController@reset');
-    Route::post('create-password-reset', 'AuthController@create');
-    Route::get('signup/activate/{token}', 'AuthController@signupActivate');
-    Route::get('password/find/{token}', 'AuthController@find');
-
     // Files
     Route::resource('files', 'FileController');
-
-    Route::group([
-        'middleware' => 'auth:api',
-    ], function () {
-        Route::get('logout', 'AuthController@logout');
-        Route::get('user', 'AuthController@user');
-    });
 });
