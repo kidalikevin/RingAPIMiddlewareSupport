@@ -57,7 +57,7 @@ class FileController extends Controller
             $filename = $file->getClientOriginalName();
 
             $file = new File();
-            $file->entry_id = $request->get('entry_id') || 0;
+            $file->entry_id = $request->entry_id;
             $file->file = $path;
             $file->save();
 
@@ -76,7 +76,7 @@ class FileController extends Controller
      */
     public function show($id)
     {
-        $file = File::where('_id', $id)->get();
+        $file = File::where('entry_id', $id)->get();
         return response()->json(['status' => 'Single file', 'data' => $file]);
     }
 
